@@ -1,0 +1,52 @@
+A Scalable Language
+
+"Scala is a blend of object-oriented and functional programming concepts in a
+  statically typed language."
+
+  Functional constructs - easily build things quickly from simple parts
+  Object-oriented constructs - easy to structure larger systems
+
+High-level example with associative arrays:
+
+  var capital = Map("US" -> "Washington", "France" -> "Paris")
+  capital += ("Japan" -> "Tokyo")
+  println(capital("France"))
+
+  High-level abstractions like this show the "scripting language" feel of Scala
+
+Cathedral and the Bazaar
+
+  Cathedral - a nearly-perfect piece of software that takes a long time to build
+                and then goes relatively unchanged for a long time
+  Bazaar - adopted and extended every day by the people working on it
+
+  Scala fits more closely with the Bazaar model. It is meant to be extended by users.
+
+Example function using bolted-on types
+
+  def factorial(x: BigInt): BigInt =
+    if (x == 0) 1 else x * factorial(x - 1)
+
+Erlang's Actor Model
+
+  In order to write concurrent programs, while avoiding the problems with
+    memory sharing and locking, Scala has adopted a message passing architecture
+
+  Actors communicate by sending messages to each other. Each actor can send
+    and receive messages
+
+  To send: recipient ! message. The send is asyncrous, so the sending actor can 
+    proceed immediately
+
+  Every actor has a mailbox that acts as a message queue
+
+  actor {
+    var sum = 0
+    loop {
+      receive {
+        case Data(bytes)       => sum += hash(bytes)
+        case GetSum(requester) => requester ! sum
+      }
+    }
+  }
+  
