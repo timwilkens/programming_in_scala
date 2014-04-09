@@ -50,3 +50,63 @@ Erlang's Actor Model
     }
   }
   
+Scala is object-oriented
+
+  "The great idea of object-oriented programming is to make these containers fully
+     general, so that they can contain operations as well as data, and that they
+     are themselves values that can be stored in other containers..."
+
+  Objects have a lot to do with language scalability. With objects, we can apply
+    the same techniques to small programs as large ones.
+
+  "Scala is an object-oriented language in pure form: every value is an object, and 
+    every operation is a method call."
+    EX: 1 + 2 in Scala invokes the method + defined in the Int class
+
+Scala is functional
+
+ Functional programming is guided by two main ideas:
+   1. Functions are first-class values.
+     - You can pass functions as arguments, return them as results, store them
+       in variables, place them inside the scope of other functions, and create
+       anonymous function literals 
+
+   2. Programs should map input values to output values rather than change data.
+     - "Immutable data structures are one of the cornerstones of functional programming"
+
+     - Methods should not have any 'side effects'
+       - Methods are 'referentially transparent' which means that any method call
+         could be replaced by its result without affecting the program's semantics
+
+  Scala allows you to program in an imperative style when desired (programming
+    with side effects and mutable data structures)
+
+Scala integrates seamlessly with Java. Scala compiles to JVM bytecode, and Scala can
+  call Java methods and inherit from Java classes.
+
+Scala is concise relative to Java (how about relative to some scripting languages?)
+
+  Class constructors are VERY concise:
+    class MyClass(index: Int, name: String)
+
+    This creates a class with two private instance variables and a constructor that
+      takes those as parameters
+
+Scala is high-level
+
+  Example: Testing if a string has an uppercase letter in it
+
+  // Java
+  boolean nameHasUpperCase = false;
+  for (int i = 0; i < name.length(); ++i) {
+    if (Character.isUpperCase(name.charAt(i))) {
+      nameHasUpperCase = true;
+      break;
+    }
+  }
+
+  // Scala
+  val nameHasUpperCase = name.exists(_.isUpperCase)
+
+  Scala treats strings as high-level sequences of characters that can be 
+    queried with predicates.
