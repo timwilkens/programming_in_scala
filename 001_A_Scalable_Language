@@ -110,3 +110,28 @@ Scala is high-level
 
   Scala treats strings as high-level sequences of characters that can be 
     queried with predicates.
+
+Scala is statically typed
+
+  There are many benefits to be gained from using a language that is statically typed:
+
+    1. Verifiable properties
+      - Static type systems can prove the absence of certain runtime errors (like
+        trying to add an Int and a Boolean)
+      - It is not a replacement for unit testing, but it provides something that
+        testing never can: "...Edsger Dijkstra said, testing can only prove the
+        presence of erros, never their absence."
+
+    2. Safe refactorings
+      - Provides a safety net that lets you make changes to a codebase with a high
+        degree of confidence
+      - Adding an extra parameter to a function can create type errors in many places.
+        But, once all these lines have been fixed you can be sure you haven't created
+        a problem
+
+    3. Documentation
+      - "Static types are program documentation that is checked by the compiler for
+        correctness."
+
+Scala has been influenced by ideas from many existing languages including Java, C#, 
+  C, C++, Smalltalk, Algol, Simula, SML, OCaml, F#, Haskell, Erlang
