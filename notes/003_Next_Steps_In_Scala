@@ -155,3 +155,102 @@ Use Lists
     - reverse   - reverses the order of the list
     - sort      - custom inline sort routine
     - tail      - entire list except the first item
+
+Tuples
+
+  Tuples are immutable sequences of objects that can be of different types
+    - tuples are useful when you need to return multiple objects from a method
+
+  val pair = (99, "Luftballonws")
+  println(pair._1)
+  println(pair._2)
+
+    - Every tuple gets a type depending on number of elements, and their types
+      - the above tuple is Tuple2[Int, String]
+    - Tuple elements are accessed with the dot operator (access a field or invoke a method)
+      - we must do it this way because the 'apply' method only works on a single type
+    - Tuple elements start at 1 (rather than zero), and fields are appended with an '_'
+
+Sets and Maps
+
+  Both sets and maps have immutable and mutable versions
+    - each has a general base trait, and then a subtrait for mutable and another for immutable
+    - their short names will be the same, but since they live in separate packages their
+      fully qualified names will be different
+
+    var jetSet = Set("Boeing", "Airbus")
+    jetSet += "Lear"     // Creates and returns a NEW set, reassigingto jeSet
+    println(jetSet.contains("Cessna")  // False
+
+    the standard 'Set' is immutable, to get an immutable set use an import
+
+      import scala.collection.mutable.Set
+
+      var movieSet = Set("Hitch", "Poltergeist")
+      movieSet += "Shrek"  // Adds to the existing set
+      println(movieSet)
+
+    For immutable sets, '+=' is simply shorthand for var = var + new_val
+
+    In mutable sets, '+=' is a method defined in the mutable set Class
+      - movie += Shrek is really movie.+=("Shrek")
+
+  Mutable Map
+
+    import scala.collection.mutable.Map
+
+    val treasureMap = Map[Int, String]()
+    treasureMap += (1 -> "Go to island.")
+    treasureMap += (2 -> "Find big X on ground.")
+    treasureMap += (3 -> "Dig.")
+    println(treasureMap(2))
+
+  By default, like Set, the Map implementation is immutable
+
+    val romanNumeral = Map(
+      1 -> "I", 2 -> "II", 3 -> "III", 4 -> "IV", 5 -> "V"
+    )
+    println(romanNumeral(4))
+
+    - when you initialize a map with objects, the type does not need to be explicitly stated
+
+Recognizing a functional style
+
+  - One helpful sign that something is written in an imperative style is if it uses vars
+    - one way to move toward a functional style is to program without vars
+    - "Scala encourages you to lean towards vals, but ultimately reach for the best tool
+       given the job at hand."
+
+  Three versions:
+
+    def printArgs(args: Array[String]): Unit = {
+      var i = 0
+      while (i < args.length) {
+        println(args(i))
+        i += 1
+      }
+    }
+
+    def printArgs(args: Array[String]): Unit = {
+      for (arg <- args)
+        println(arg)
+    }
+
+    def printArgs(arg: Array[String]): Unit = args.foreach(println)
+
+  
+    - The changes have moved towards a more funtional style, but they still produce
+      side-effects (they return 'Unit')
+
+    - One way to fix this is to have the function format the string to be printed, and
+      return that to be printed by the caller
+
+      def formatArgs(args: Array[String]) = args.mkString("\n")
+
+  A huge benefit of programming without side-effects is that it makes testing easy
+    - we could not easily test any of the functions above that print out
+    - we COULD test the formatArgs version
+
+  Simple test:
+    val res = formaArgs(Array("zero", "one", "two"))
+    assert(res == "zero\none\ntwo")
