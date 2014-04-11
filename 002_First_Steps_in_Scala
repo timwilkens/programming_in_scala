@@ -1,0 +1,138 @@
+First Steps in Scala
+
+  "The type Int names the class Int in the package scala. Packages in Scala are similar
+   to packages in Java: they partition the global namespace and provide a mechanism
+   for information hiding."
+
+All of Java's primitive types have corresponding classes in the scala package.
+  scala.Boolean == Java's boolean
+  scala.Float == Java's float
+
+Scala has two kinds of variables: var and val
+
+  Var: Mutable. Can be reassigned to over and over again.
+
+  Val: Immutable. Once initialized, a val can never be reassigned.
+    - trying to reassign gives: 'error: reassignment to val'
+    - Think 'value'
+
+Scala has 'type inference', which means you often don't have to explicitly state
+  types when declaring variables (var or val)
+
+  The following are equivalent:
+
+    var message = "Hello, World!"
+
+    var message: String = "Hello, World!"
+
+Functions
+
+  Function declaractions start with the keyword 'def'
+
+  Def is followed by a comma separated list of parameters in parens
+    - each parameter MUST have a type 
+    (x: Int, y: Int)
+
+  After the parens, we can optionally have a colon with another type
+    (parameters): Int
+    - this is the result type
+
+  This is followed by an equals sign and a body wrapped in curly braces
+
+  The return in Scala functions are implicit - the last statement value will be returned
+
+  EX:
+ 
+    def max(x: Int, y: Int): Int = {
+      if (x > y) 
+        x
+      else
+        y
+    }
+
+  This 'if (condition) value else value' format is identical to the ternary operator ?:
+
+  In the case of 'max above, the return type can be left off because the compiler
+    will be able to infer it.
+    - In other cases, like recursive functions, the return type must be included
+
+  If the function body consists of one statement, the curly braces be left off
+
+  more compactly:
+
+    def max(x: Int, y: Int) = if (x > y) x else y
+    
+  Functions can also take no arguments are return no values
+
+    def greet() = println("Hello")
+ 
+    - this function has a return type of 'Unit'
+    - this indicates that the function returns no value, and is similar to 'void'
+
+  Functions with a return type of 'Unit' are purely side-effect functions
+
+Scala scripts
+
+  Scala is easy to use a quick scripting language
+
+  'println("Hello, World")' placed in a file 'hello.scala' can be executed 
+    `scala hello.scala`
+
+  Command line arguments are available in an array named 'args'
+
+    - Scala's arrays are indexed starting with 0
+    - BUT, elements of an array are accessed via parens NOT square braces
+
+    var first_item = args(0) 
+
+    println("Hello " + args(0) + "!")
+
+Loop Constructs
+
+  While loops are almost identical to C, Perl, Java, etc
+
+  var i = 0
+  while (i < args.length) {
+    println(args(i))
+    i += 1
+  }
+
+  ++i and i++ do NOT work - both i += 1 and i = i + 1 work
+
+  In while and if constructs the condition must be in parens
+
+  If a block only has one state the curly braces can be left off
+
+    if (x != 0)
+      print(" ")
+
+  Scala DOES use semicolons to separate statements, but they are often optional
+
+For loops and the functional style
+
+  While loops often lead us into programming in an imperative style
+    - we end up specifying a list of ordered operations to do
+
+  One goal of this book is to get us thinking in a more functional way
+
+  One of the main characteritics of a functional language is that functions are 
+    first class constructs
+    - This means we often pass in functions to other functions (callbacks)
+
+    - Below we pass in a 'function literal' that takes in one parameter named arg
+
+      args.foreach(arg => println(arg))
+    
+    - We can make this even more concise: If a function literal takes a single argument
+      we do not have explicitly state name it
+
+      args.foreach(println)
+
+  Scala's for loops:
+
+    for (arg <- args)
+      println(arg)
+
+    - 'arg' is a val, not a var
+      - inside the scope of the loop, arg cannot be reassigned
+      - each time we initialize a brand new 'arg' variable
