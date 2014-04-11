@@ -1,0 +1,157 @@
+Next Steps in Scala
+
+Parameterize arrays with types
+
+  "In Scala, you can instantiate objects, or class instances, using new."
+    - when you do so, you 'parameterize' it with values and types
+    - you accomplish this by passing arguments to object constructors
+
+  EX: val big = new java.math.BigInteger("12345")
+
+  You can parameterize both type and values: 
+    - type is done in square brackets
+    - value is done in parens
+
+  EX: val names = new Array[String](3)
+      names(0) = "Rob"
+      names(1) = "Linda"
+      names(2) = "Craig"
+  // NOTE: this is not the recommended way to intiliaze an array in Scala
+
+  An important note on 'val':
+    - in the above example, 'names' will always point to the same array instance,
+      but, this does not prevent us from changing elements IN the array
+
+    - "When you define a variable with val, the variable can't be reassigned, but the
+         the object to which it refers could potentially still be changed."
+
+  General Scala rule: if a method takes only one parameter you can call it without '.' or parens
+
+    - In the for loop (i <- 0 to 2), the 'to' is actually a method called which gets turned
+        into (0).to(2)
+
+  All of the 'operators' (+, -, *, /) are actually method calls
+    - 1 + 2 is really a method call - (1).+(2)
+
+  Arrays in Scala use parens to access elements because this is just another function call
+    - arrays are just instances of classes
+    - array(3) is really array.apply(3)
+
+    - In general, if you write object(values) this gets compiled to object.apply(values), assuming
+        the class of that object defines an apply method
+
+    In a similar way, when we write array(0) = value, we are really writing array.update(0, value)
+
+  EX:
+
+    // Normally written
+      val names = Array[String](2)
+      names(0) = "Alice"
+      names(1) = "Bob"
+
+      for (i <- 0 to 2)
+        println(names(i))
+
+    // Fully written
+      val names = Array[String](2)
+      names.update(0, "Alice")
+      names.update(1, "Bob")
+
+      for (i <- (0).+(2))
+        println(names.apply(i))
+
+  The rational for this is that Scala can treat EVERYTHING as an object with methods defined on it
+    - This gives us some amount of conceptual simplicity
+
+  The 'correct' way to initialize arrays:
+
+    val names = Array("Alice", "Bob")
+
+    - the compiler will infer the String type for this array
+    - this call is actually a 'factory method' called apply which creates and returns the new array
+      - essentially an array constructor defined in the Array class
+
+    Alternatively: val names = Array.apply("Alice", "Bob")
+
+Use Lists
+
+  Benefits of a functional programming style
+    1. Methods become less entangled, and therefore more reliable and reusable
+    2. Everything going in and out of a method gets type checked (in a statically typed lang)
+       so errors are more likely to manifest themselves early as type errors
+
+    - The application of this to the world of objects means making objects immutable
+
+  Collection objects: 
+    An ARRAY is a mutable sequence of objects which all share the same type
+    
+    A LIST is a sequence of objects which all share the same type
+      - lists are designed to enable (maybe force?) a functional style of programming
+
+    List creation is nearly identical to array creation
+      val names = List("Alice", "Bob")
+
+    All methods that operate on lists will return new lists, rather than modifying the input list
+
+    The method ':::' is list concatenation
+
+  EX:
+    val oneTwo = List(1,2)
+    val threeFour = List(3,4)
+
+    val oneTwoThreeFour = oneTwo ::: threeFour
+
+    // Produces (1,2,3,4)
+
+    The method '::' is the cons operator
+      - it is used to add a new element to the beginning of a list
+
+  EX:
+    val twoThree = List(2,3)
+    val oneTwoThree = 1 :: twoThree
+
+    // Produces (1,2,3)
+
+    val oneTwo = List(1,2)
+    val threeFour = List(3,4)
+
+    val oneTwoThreeFour = oneTwo :: threeFour
+
+     // Produces List(List(1,2), 3, 4)
+    // Type of List changed from 'Int' to 'Any'
+
+  In general, methods are performed on the left operand
+    - 1 + 2 calls the method '+' on the object 1 with the argument 2
+
+    - If a method name ends with a ':', the method is performed on the right operand
+      - 1 :: twoThree is really twoThree.::(1)
+
+  The special word 'Nil' is shorthand for an empty list
+
+    - Using Nil we can intialize a list in another way
+      val numbers = 1 :: 2 :: 3 :: Nil
+ 
+      - Using consecutive applications of the cons method we create a list
+      - Since we associate to the right, '::' is applied to Nil first creating an empty list
+
+  There are many methods on List
+    - most of these can be called with functional literals as arguments
+
+    - count     - number of elements
+    - drop      - return the list without the first n items
+    - dropRight - return the list without the last n items
+    - exists    - does the input item exist in the list
+    - filter    - create a new list with the items that satisfy the function literal
+    - forall    - test if some condition is true for all items
+    - foreach   - do something for every item
+    - head      - return the first item
+    - init      - return all but the last
+    - isEmpty   - is the list empty?
+    - last      - gives just the last item
+    - length    - the number of elements in the list
+    - map       - creates a new list passing each item through the function literal passed in
+    - mkString  - makes a single string with the items in the list
+    - remove    - returns a list of all items except the ones specified
+    - reverse   - reverses the order of the list
+    - sort      - custom inline sort routine
+    - tail      - entire list except the first item
