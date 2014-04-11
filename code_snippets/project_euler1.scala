@@ -1,3 +1,4 @@
+// Imperative Style
 def threeOrFive(x: Int) = if ((x % 3 == 0) || (x % 5 == 0)) true else false
 var total = 0
 
@@ -7,3 +8,15 @@ for (i <- 3 to 999) {
 }
 
 println(total)
+
+// Functional style
+def sum(nums: IndexedSeq[Int]): Int = {
+  var total = 0
+  for (num <- nums)
+    total += num
+
+  total
+}
+
+val nums = sum((3 to 999).filter(s => (s % 3 == 0 || s % 5 == 0)))
+println(nums)
