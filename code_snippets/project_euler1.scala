@@ -10,13 +10,5 @@ for (i <- 3 to 999) {
 println(total)
 
 // Functional style
-def sum(nums: IndexedSeq[Int]): Int = {
-  var total = 0
-  for (num <- nums)
-    total += num
-
-  total
-}
-
-val nums = sum((3 to 999).filter(s => (s % 3 == 0 || s % 5 == 0)))
-println(nums)
+total = (3 to 999).filter(s => (s % 3 == 0 || s % 5 == 0)).sum
+println(total)
