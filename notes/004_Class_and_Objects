@@ -1,0 +1,125 @@
+Classes and Objects
+
+  "A class is a blueprint for objecst. Once you define a class, you can create objects
+     from the class blueprint with the keyword new."
+
+  Each class definition contains both fields and methods which are called members.
+    - Fields are variables that refer to objects
+      - They hold the state, or date, of the object
+      - Also known as 'instance variables'
+    - Methods contain executable code
+      - They do the computational work of the object
+
+  EX: 
+
+    class MyClass {
+      var sum = 0
+    }
+
+    val mine = new MyClass
+
+  Instantiate a new object of class MyClass assigned into a val named mine.
+    - We CAN change the value of instance variables in the object mine points to
+    - We CAN'T change the actual object that mine points to since it is a val
+
+  One important way to ensure modularity is to declare member variables as private.
+    - This ensures that the value of these variables can ONLY be set via publicly accessible
+      methods.
+    - By default, member variables are public.
+
+  EX:
+  
+    class MyClass {
+      private var sum = 0
+    }
+
+    val mine = new MyClass
+    mine.sum = 5  // This will fail! It is not accessible this way
+
+  To allow changing member variables, we must include some methods
+
+  EX:
+
+    class CheckSumAccumulator {
+      private var sum = 0
+      def add(b: Byte): Unit = sum += b
+      def checksum(): Int = ~(sum & 0xFF) + 1
+    }
+
+    Important note: all parameters to methods are vals not vars
+      - reassigning to b in the 'add' method would fail
+
+    Recommended style in Scala is to avoid putting in explicit 'return' statements since they
+      are unneeded.
+      - This ends up forcing us to divide functions into smaller and smaller chunks
+
+  We can also write functions in the procedural style
+
+    // Functional
+     def add(b: Byte): Unit = sum += b
+
+    // Procedural
+     def add(b: Byte) { sum += b }
+
+    - If we use the procedural style (curly braces and no '=') the result type is always Unit
+
+  Semicolon Inference
+
+    - In general, semicolons are unneeded
+    - Semicolons are required if we place multiple statements on a single line
+    
+    - A common idiom for chaining infix operators (like +) is to place the operator 
+        at the end of each line, since Scala will parse this correctly
+
+    EX:
+       x +
+       y +
+       z
+
+    Explicit Rules: A line ending is treated as a semicolon unless one of the following is true:
+      1. The line ends in a word that would not be legal as the end of a statement
+      2. The next line begins with a word that cannot start a statement
+      3. The line ends while inside parens or brackets
+
+  Singleton Objects
+
+    Instead of having static members like Java, Scala has singleton objects.
+      - These look like class definitions but have the 'object' keyword
+
+    They are named with the same name as their companion class (object MyClass)
+      - Both object and class must be defined in the same source file
+      - A class and its companion can access each other's private members
+
+  EX: 
+
+    import scala.collection.mutable.Map
+
+    object CheckSumAccumulator {
+      private val cache = Map[String, Int]
+
+      def calculate(s: String): Int = 
+        if (cache.contains(s))
+          cache(s)
+        else {
+          val acc = new CheckSumAccumulator
+          for (c <- s)
+            acc.add(c.toByte)
+          val cs = acc.checksum()
+          cache += (s -> cs)
+          cs
+        }
+    }
+
+    Methods in singleton objects can be invoked with the dot operator
+      CheckSumAccumulator.calculate("This is a string")
+
+    Defining a singleton object does not define a type.
+      - We can't use 'new' to create an object of type CheckSumAccumulator
+  
+    Singleton objects extend their superclass and can mix in traits
+
+    Difference: Singleton objects are NOT initialized with any parameters.
+      - each singleton obect is an instance of a synthetic class
+
+    A singleton object that does not share the same name with a companion class is called
+      a standalone object.

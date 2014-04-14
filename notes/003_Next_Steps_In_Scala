@@ -254,3 +254,42 @@ Recognizing a functional style
   Simple test:
     val res = formaArgs(Array("zero", "one", "two"))
     assert(res == "zero\none\ntwo")
+
+Read lines from a file
+
+  EX:
+    import scala.io.Source
+
+    if (args.length > 0) {
+      for (line <- Source.fromFile(args(0)).getLines)
+        print(line.length + " " + line)
+    }
+    else
+      Console.err.println("Requires a filename")
+
+  Source.fromFile(args(0)) inteprets the first item as a file, opens it, slurps the content,
+    and returns a Source object which we then call getLines on.
+    - getLines returns an Iterator[String]
+
+  We can transform the call Source.fromFile(args(0)).getLines to
+    Source.fromFile(args(0)).getLines.toList which will return a list we can store in a val
+
+    val lines = Source.fromFile(args(0)).getLines.toList
+
+  Handy method: max
+
+    maxWidth.max(widthOfLength(line))
+      - max takes in the object it is called on, and the argument, and returns whichever is greater
+
+    var maxWidth = 0
+    for (line <- lines)
+      maxWidth.max(widthOfLength(line))
+
+    Clean way to get the maximum length line 
+
+  A more functional way:
+  
+    val longestLine = lines.reduceLeft( (a,b) => if (a.length > b.length) a else b )
+
+    reduceLeft applies to the first two items, then the result of that calculation and the next
+      and so on until the end of the list
