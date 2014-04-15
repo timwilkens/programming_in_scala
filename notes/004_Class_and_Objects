@@ -123,3 +123,46 @@ Classes and Objects
 
     A singleton object that does not share the same name with a companion class is called
       a standalone object.
+
+A Scala Application
+
+  To run a Scala program, you need a standalone singleton object with a main method that
+    takes one parameter (Array[String]) and has a result type of Unit.
+
+  EX:
+     
+    import CheckSumAccumulator.calculate  // Import the function. Use it without the package name.
+
+    object Summer {
+      def main(args: Array[String]) {
+        for (arg <- args)
+          println(arg + ": " + calculate(arg))
+      }
+    }
+
+  To run the Summer application, place the object definition inside a file called Summer.scala
+    - Place the class def and singleton object in a file named ChecksumAccumulator.scala
+    - Scala Class files do NOT have to have the same name as the class, but this is the 
+        standard practice (makes it easier to find files)
+
+     - Because neither file ends in a result expression, neither can be executed as a script
+     - Instead, we compile the files: 'scalac ChecksumAccumulator.scala Summer.scala'
+
+     - In order to run this program, we enter 'scala' followed by the name of our standalone
+         object containing the main method.
+
+  Another way to achieve this same goal is to use the scala.Application trait
+
+  EX:
+  
+    import ChecksumAccumulator.calculate
+
+    object FallWinterSpringSummer extends Application {
+      for (season <- List("fall", "winter", "spring", "summer")
+        println(seasons + ": " + calculate(season)
+    }
+
+      - We no longer have to include a main method with the appropriate signature
+      - One drawback to this is that the command line arguments are not accessible
+      - In general, we should only use this method (as opposed to the explicit main method)
+          if our application is simple and not multi-threaded
