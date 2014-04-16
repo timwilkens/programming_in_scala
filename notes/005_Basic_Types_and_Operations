@@ -1,0 +1,78 @@
+Basic Types and Operations
+
+  Integral types - Byte, Short, Int, Long, Char
+  Numeric types - Float, Double + Integral types
+
+  Byte    - 8-bit signed two's complement integer (-2^7 to 2^7 - 1, inclusive)
+  Short   - 16-bit signed two's complement integer (-2^15 to 2^15 - 1, inclusive)
+  Int     - 32-bit signed two's complement integer (-2^31 to 2^31 - 1, inclusive)
+  Long    - 64-bit signed two's complement integer (2^63 to 2^63 - 1, inclusive)
+  Char    - 16-bit unsigned Unicode character (0 to 2^16 - 1, inclusive)
+  String  - a sequence of Chars
+  Float   - 32-bit IEEE 754 single-precision float
+  Double  - 64-bit IEEE 754 double-precision float
+  Boolean - true or false
+
+    - all the above names are really scala.Int, but are imported everywhere
+    - you can currently write 'int' instead of 'Int', but this is not the common style,
+        and may eventually be deprecated
+
+Literals
+
+  Int, Long, Short, and Byte can be written in three ways:
+
+    1. Decimal     - 10
+    2. Hexadecimal - 0x5
+    3. Octal       - 035
+
+    If an integer literal ends with a 'L' or 'l', it is a Long
+      - 35L, 0XCAFEBABEL
+
+    We can assign Byte and Short by explicitly writing the type (works if the value is valid)
+      - val little: Short = 367
+
+    Floats are combinations of numbers, decimal points, and optionally an 'e' followed by digifs
+      val big = 1.2345
+      val bigger = 1.2345e1 // 1.2345 X 10^1
+
+    Char literals are represented by any Unicode character between single quotes
+      val a = 'A'
+      val a = '\101'
+      val a = '\u0041'
+
+    Special Character literals:
+      \n - line feed
+      \b - backspace
+      \t - tab
+      \f - form feed
+      \r - carriage return
+      \" - double quote
+      \' - single quote
+      \\ - backslash
+
+      val backslash = '\\'  // Produces the single '\' character
+
+    String literals are sequences of characters surrounded by double quotes
+      val hello = "hello"
+
+    To avoid long sequences of escapes ("\\\'\""), we can use the triple quote """.
+      - Inside the triple quotes, no sequences are interpreted and new lines are respected
+
+      val superString = """this is a long string
+                           that goes onto two lines without the \n character"""
+
+Operators are methods
+
+  The standard operators are just a nice syntax for ordinary method calls
+    - 1 + 2 is really (1).+(2)
+
+  The '+' operator is overloaded, and has different behaviour depending on the arguments passed in
+
+    - addition is an example of an infix operator
+    - EVERY method can be written as an infix operator
+ 
+    EX:
+        val s = "Hello, world!"
+ 
+        s.indexOf('o') // Method invocation
+        s indexOf 'o'  // Infix operator
