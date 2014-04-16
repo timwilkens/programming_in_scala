@@ -76,3 +76,56 @@ Operators are methods
  
         s.indexOf('o') // Method invocation
         s indexOf 'o'  // Infix operator
+
+  Scala also allows use of postfix (7 toLong) and prefix (-7) unary operators
+    - As with infix operators, these operators are just method calls under the covers
+
+    '- 7' is really (7).unary_- (unary methods are prefixed with 'unary_'
+
+     - Only the symbols '+', '-', '!', and '~' are valid prefix operators
+
+  "In Scala, you can leave off empty parentheses on method calls."
+    - The convention is that methods with side effects include parens, and methods without
+      side effects leave off the parens
+
+      val s = "Hello, World"
+      s toLowerCase
+
+  Standard arithmetic is done with:
+    + - addition
+    - - subtraction
+    * - multiplication
+    / - division
+    % - modulo
+
+  When both the left and right operand are integral types (Int, Long, Byte, Short, Char),
+    division will return the truncated result 3/2 => 1
+
+  The standard relational/logical operators are used: <, >, <=, >=, !, &&, ||
+    - The logical-and and logical-or operators are short-circuited.
+      - If the left side of an and statement is false the right side won't be evaluated
+      - If the left side of an or statement is true the right side won't be evaluated
+
+  Scala allows use of the following bitwise operators:
+    - & - bitwise-and
+    - | - bitwise-or
+    - ^ - bitwise-xor
+    - ~ - bitwise complement
+    - << - shift left
+    - >> - shift right
+    - >>> - unsigned shift right
+
+      - Shift left and unsigned shift right fill with zeroes
+      - Shift right fills with the highest bit of the left-hand value
+
+  Object equality is done using '==' and '!='
+    - These operations work on ALL objects
+    EX:
+        List(1,2,3) == List(1,2,3) => true
+
+    - These operations also work when the two objects are of different types
+    - You can also compare things to 'null'
+
+    - This type of equality is NOT the same as Java's 'referential equality' where 
+        reference types are compared by looking at their location in the heap
+      - You can access this behaviour by using 'eq' and 'ne'
