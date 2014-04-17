@@ -129,3 +129,6 @@ Operators are methods
     - This type of equality is NOT the same as Java's 'referential equality' where 
         reference types are compared by looking at their location in the heap
       - You can access this behaviour by using 'eq' and 'ne'
+
+  Precedence rule to remember: *, /, and % have higher precedence than + and -
+    - The 'multiplicative' operators will be executed first

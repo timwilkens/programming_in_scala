@@ -1,0 +1,42 @@
+Functional Objects
+
+  Functional Objects are objects that don't have any mutable state.
+
+  Running example: modeling rational numbers
+    - a rational number can be expressed as a ratio of two integers (denominator != 0)
+
+    Add - establish a common denominator, and add numerators
+    Multiply - denominator * denominator and numerator * numerator
+    Divide - flip one rational, and then multiply
+
+    - our rationals are going to be immutable. An operation on rationals yields a new rational
+
+  Start with the API
+    - instantiate a new rational by providing a numerator and denominator
+    class Rational(n: Int, d: Int)
+
+      - the class declaration does NOT need curly braces (or content)
+      - anything placed inside the curly braces will be included as part of the constructoro
+
+  Creating a new instance of Rational prints out "Rational = Rational@94091a"
+
+    - this is the result of calling toString on the newly created object
+    - this method is inherited from java.lang.Object
+
+    - we can override inherited methods by writing 'override' before our method def
+
+  class Rational(n: Int, d:Int) {
+    override def toString = n + "/" + d
+  }
+
+  We must prevent users from creating new Rationals with a denominator of zero.
+
+    - We can accomplish this by using the 'require' method
+      - This method takes one boolean parameter, and throws an exception if false
+
+  class Rational(n: Int, d:Int) {
+    require(d != 0)
+    override def toString = n + "/" + d
+  }
+
+  Our add method will be a publicly accessible method that returns a NEW Rational
