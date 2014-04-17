@@ -40,3 +40,22 @@ Functional Objects
   }
 
   Our add method will be a publicly accessible method that returns a NEW Rational
+
+  In order to add our add method, we need to make n and d publicly accessible fields
+
+    val numer: Int = n
+    val denom: Int = d
+
+    These can now be accessed publicly through r.numer and r.denom
+
+  class Rational(n: Int, d: Int) {
+    require(d != 0)
+    val numer: Int = n
+    val denom: Int = d
+    override def toString = numer + "/" + denom
+    def add(that: Rational): Rational = 
+      new Rational(
+        numer * that.denom + that.numer * denom,
+        denom * that.denom
+      )
+  }
