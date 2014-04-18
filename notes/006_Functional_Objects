@@ -59,3 +59,94 @@ Functional Objects
         denom * that.denom
       )
   }
+
+  Self References
+
+    "The keyword 'this' refers to the object instance on which the currently executing method
+      was invoked, or if used in a constructor, the object instance being constructed."
+
+    EX:
+      def lessThan(that: Rational) = 
+        this.numer * that.denom < that.numer * this.denom
+     
+        - it is also possible to leave off the 'this' and write just 'numer'
+
+   EX: where this is necessary
+     def max(that: Rational) = 
+       if (this.lessThan(that)) that else this
+
+  Auxiliary Constructors
+
+    - Alternate constructors from the primary one are called auxiliary constructors
+      def this (...)
+
+    - Example use case: Define a Rational(5,1) in short hand by Rational(5)
+      - Need a second constructor that doesn't take two parameters, and assumes the denom
+        is 1
+
+  class Rational(n: Int, d: Int) {
+    require(d != 0)
+    val numer: Int = n
+    val denom: Int = d
+    def this(n: Int) = this(n, 1) // aux constructor
+
+    override def toString = numer + "/" + denom
+
+    def add(that: Rational): Rational = 
+      new Rational(
+        numer * that.denom + that.numer * denom,
+        denom * that.denom
+      )
+  }
+
+  Every auxiliary constructor will eventually call the standard constructor
+
+  We can create private fields and private methods by prefixing our declarations with 'private'
+    - In order to reduce our rationals, we create a private gcd function and g field
+
+  class Rational(n: Int, d: Int) {
+    require(d != 0)
+
+    private val g = gcd(n.abs, d.abs)
+    val numer = n / g
+    val denom = d / g
+
+    def this(n: Int) = this(n, 1)
+
+    def add(that: Rational): Rational =
+      new Rational(
+        numbr * that.denom + that.numer * denom,
+        denom * that.denom
+      )
+
+    override def toString = numer + "/" + denom
+
+    private def gcd(a: Int, b: Int): Int = 
+      if (b == 0) a else gcd(b, a % b)
+  }
+
+  We can create our own operators by replacing 'def add' with 'def +'
+
+  class Rational(n: Int, d: Int) {
+    require(d != 0)
+
+    private val g = gcd(n.abs, d.abs)
+    val numer = n / g
+    val denom = d / g
+
+    def this(n: Int) = this(n, 1)
+
+    def + (that: Rational): Rational =
+      new Rational(
+        numbr * that.denom + that.numer * denom,
+        denom * that.denom
+      )
+
+    def * (that: Rational): Rational = 
+      new Rational(numer * that.numer, denom * that.denom)
+
+    override def toString = numer + "/" + denom
+
+    private def gcd(a: Int, b: Int): Int = 
+      if (b == 0) a else gcd(b, a % b)
+  }
