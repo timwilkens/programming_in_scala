@@ -150,3 +150,13 @@ Functional Objects
     private def gcd(a: Int, b: Int): Int = 
       if (b == 0) a else gcd(b, a % b)
   }
+
+  In general, Scala uses camel-case for identifiers
+    - start with a lowercase leter for fields, method parameters, variables, and functions
+    - start with an uppercase leter for classes and traits
+
+  We are allowed to overload the method names inside a class
+    - the compiler will choose the correct one based on its parameter signature
+
+  "The goal you should keep in mind as you design libraries is not merely enabling concise client
+     code, but readable, understandable client code."
