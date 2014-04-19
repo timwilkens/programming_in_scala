@@ -1,0 +1,130 @@
+ Built-in Control Structures
+
+  The only built-in control structures are if, while, for, try, match, and function calls
+
+  An important feature to recognize is that most of these constructs result in a value
+
+  This means it is possible to the following:
+
+    val filename = 
+      if (!args.isEmpty) args(0)
+      else "default.txt"
+
+If expressions
+
+  It is possible to write imperative style if statements
+
+    var filename = "default.txt"
+    if (!args.isEmpty)
+      filename = args(0)
+
+  Scala prefers the first method written above that puts the filename directly into a val
+    - Vals are preferred, in general, because they prevent programmers from having to scan
+        a control loop to see if a variable changes
+    - Vals also introduce 'equational reasoning.'
+      - If a variable is equal to an equation, we can use them interchangeably, assuming
+        the equation has no side effects
+
+    "Look for opportunities to use vals. They can make your code both easier to read and
+     easier to refactor."
+
+While loops
+
+  Scala has both while loops (where the body may never be executed) and do while loops,
+    where the body is always executed at least once
+
+  These two constructs are called "loops", not expressions.
+    - neither of them results in a return value
+    - they have a return type of Unit
+
+  This means that the Java/C/C++ style while loop below will not work
+
+    var line = ""
+    while((line = readLine()) != "")  // line = readline() returns Unit != ""
+      println("Read: " + line)  // Infinite loop
+
+  Many functional languages leave out the while loop completely because it is not an expression
+
+  Most while loops can be written more succinctly, though perhaps less clearly, by using
+    recursion
+
+  EX:
+
+    // Imperative style
+
+    def gcd(x: Long, y: Long): Long {
+      var a = x
+      var b = y
+      while (a != 0) {
+        val temp = a
+        a = b % a
+        b = temp
+      }
+      b
+    }
+
+  // Functional
+
+  def gcd(x: Long, y: Long): Long = 
+    if (y == 0) x else gcd(y, x % y)
+
+  "In general, we recommend you challenge while loops in your code in the same way
+     you challenge vars."
+
+For expressions
+
+  "Scala's for expression is a Swiss army knife of iteration."
+
+  The simplest use of a for loop is to iterate over the items in a collection
+    - The '<-' syntax is called a generator
+
+  EX: listing the files in the current directory
+
+    val filesHere = (new java.io.File(".")).listFiles
+    for (file <- filesHere)
+      println(file)
+
+  Scala has two types of Range to iterate over
+
+     for (i <- 1 to 4)  // Inclusive
+
+     for (i <- 1 until 4)  // Excludes upper bound
+
+
+  The following form, common in other languages, is not common in Scala:
+
+  for (i <- 0 to filesHere.length - 1)
+    do.Stuff
+
+Filtering
+
+  Scala style places a postfix if inside the for expression
+
+  EX: get only the files that end with '.scala'
+
+    for (file <- filesHere if file.getName.endsWith(".scala"))
+      println(file)
+
+  It is also possible to add multiple filters to the for statement
+    - each if statement must end with a semicolon
+
+  for (
+    file <- filesHere
+    if file.isFile;
+    if file.getName.endsWith(".scala")
+  ) println(file)
+
+  You can also nest generators inside the condition check of the for loop
+
+  def fileLines(file: java.io.File) = 
+    scala.io.Source.fromFile(file).getLines.toList
+
+  def gre(pattern: String) = 
+    for (
+      file <- filesHere
+      if file.getName.endsWith(".scala");
+      line <- fileLines(file)
+      if line.trim.matches(pattern)
+    ) println(file + " : " + line.trim)
+
+  grep(".*gcd.*")
