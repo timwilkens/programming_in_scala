@@ -54,6 +54,8 @@ class BinaryTree(nodes: Array[Int]) {
 object BinaryTree {
 
   def main (args: Array[String]) = {
+
+    require(!args.isEmpty)
     var nodeValues = args.map(_.toInt)
     val tree = new BinaryTree(nodeValues)
 
