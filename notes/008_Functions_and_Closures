@@ -124,3 +124,49 @@ Partially applied functions
   "Although you can't assign a method or nest function to a variable, or pass it as an 
    argument to another function, you can do these things if you wrap the method or nested
    function in a function value by placing an underscore after its name."
+
+  In the example above, the function 'summer' is partially applied because it supplies
+  none of the arguments to sum. We can also do truly 'partial' functions:
+
+    val summer2 = sum(1, _: Int, 3)
+
+    summer2(2)  // Returns 1 + 2 + 3
+
+  In cases where a function is needed, and the entire parameter list is left, we can also leave 
+  off the underscore.
+
+    someNumbers.foreach(println _)
+
+    can be written: someNumbers.foreach(println)
+
+Closures
+
+  Many function literals do not make reference to 'free variables'.
+
+    (x: Int) => x + 1
+
+    - x and 1 are all bound inside the scope of this function
+
+  If we do the following:
+
+    (x: Int) => x + more
+
+    - more is a 'free variable'
+    - the compiler will complain unless more was previously defined
+
+    "But any function literal with free variables, such as (x: Int) => x + more, is an open term.
+     Therefore, any function value created at runtime from this will by definition require that a
+     binding for its free variable, more, be captured. The resulting function value, which will
+     contain a reference to the captured more variable, is called a closure, therefore, because
+     the function value is the end product of the act of closeing the open term."
+
+    Scala's closures capture the variables, not the values to which they point.
+      - changes made external to the closure are visible in the closure
+      - changes made in the closure are visible outside of it
+
+    
+  def makeIncreaser(more: Int) = (x: Int) => x + more
+
+    - generates a function that will incremement our argument by the value we initialized more to
+    val increaser = makeIncreaser(1) // Adds one to argument to increaser
+    increaser(1) // Returns 2
