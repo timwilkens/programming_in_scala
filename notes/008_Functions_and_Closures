@@ -96,4 +96,31 @@ Placeholder Syntax
 
 Partially applied functions
 
+  "Although the previous xamples substitute underscores in place of individual parameters,
+   you can also replace an entire parameter list with an underscore."
+
+  someNumbers.foreach(println _)
+
+  is equivalent to: someNumbers.foreach(x => println(x)) 
+
+  The underscore here is really a placeholder, not for a single parameter, but an entire
+  parameter list.
+
+  "A partially applied function is an expression in which you don't supply all of the 
+   arguments needed by the function. Instead, you supply some, or none, of the needed
+   arguments."
+
+  EX:
   
+  // define our function sum
+  def sum(a: Int, b: Int, c: Int) = a + b + c
+
+  // take our partially defined reference
+  val summer = sum _
+
+  // use our reference
+  summer(1,2,3)
+
+  "Although you can't assign a method or nest function to a variable, or pass it as an 
+   argument to another function, you can do these things if you wrap the method or nested
+   function in a function value by placing an underscore after its name."
