@@ -1,0 +1,99 @@
+Functions and Closures
+
+  Scala offers several 'ways' to do functions:
+    1. Methods (functions that are members of an object)
+    2. Functions nested within functions
+    3. Function literals
+    4. Function values
+
+Methods
+
+  We have already seen a lot of these
+    - pretty similar to what you find in object-oriented languages
+
+Local Functions
+
+  "...programs should be decomposed into many small functions that each do a well-defined task.
+   Individual functions are often quite small. The advantage of this style is that it gives
+   a programmer many building blocks that can be flexibly composed to do more difficult things."
+
+    - one problem with this method is that we can end up polluting the namespace with tons
+      of random, small functions
+    - In Scala, we can declare functions INSIDE other functions so that they have scope
+      - we also have access to the 'private' modifier, but this only works on methods
+
+  EX:
+
+  import scala.io.Source
+
+  object LongLines {
+    def processFile(filename: String, width: Int) {
+    
+      def processLine(line: String) {
+        if (line.length > width)
+          print(filename + ": " + line)
+      }
+
+      val source = Source.fromFile(filename)
+      for (line <- source.getLines) {
+        processLine(line)
+      }
+    }
+  }
+
+    - processLine is only accessible inside of processFile; it is a local function
+
+First-class Functions
+
+  Saying that Scala has first-class functions means that functions can be passed around as values
+  without names.
+
+  EX: (x: Int) => x + 1
+    - first-class functions can be stored in variables like other values 
+
+  var increase = (x: Int) => x + 1
+  increase(10) // now 11
+
+  We can add more than a single statement to a function literal by putting the whole block in
+  curly braces
+
+  var increase = (x: Int) => {
+    println("Inside our function")
+    x + 1
+  }
+
+  "...a foreach method is available for all collections. It takes a function as an argument and 
+   invokes the function on each of its elements."
+
+  val someNumbers = List(-11, -10, -5, 0, 5, 10)
+  someNumbers.foreach((x: Int) => println(x))
+
+  - another method that takes in function literals is filter
+
+    someNumbers.filter((x: Int) => x > 0) // Get just the posivite numbers
+
+Short forms of function literals
+
+  There are many cases where we remove the type declaration from our function literals
+
+   someNumbers.filter((x: Int) => x > 0)
+   becomes: someNumbers.filter((x) => x > 0)
+
+  "You can simply start by writing a function literal without the argument type, and, if 
+   the compiler gets confused, add in the type."
+
+  Additionally, we can leave parens off of arguments whose type is inferred
+    someNumbers.filter(x => x > 0)
+
+Placeholder Syntax
+
+  "To make a function literal even more concise, you can use underscores as placeholders for one
+   or more parameters, so long as each paramter appears only one time within the function literal."
+
+  someNumbers.filter(_ > 0)
+
+  We can specify the type of the parameter by writing (_: Int) when necessary 
+
+Partially applied functions
+
+  
