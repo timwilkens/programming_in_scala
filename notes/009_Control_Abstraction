@@ -1,0 +1,50 @@
+Control Abstraction
+
+Reducing Code Duplication
+
+  "All functions are separated into common parts, which are the same in every invocation of
+   the function, and non-common parts, which may vary from one function invocation to the next.
+   The common parts are in the body of the function, while the non-common parts must be 
+   supplied via arguments."
+
+   
+  Higher-order functions are functions that take other functions as arguments.
+    - these functions allow us to "condense and simplify code."
+
+  Ex: singleton object used to search for patterns in filenames
+
+  object FileMatcher {
+    private def filesHere = (new java.io.File(".")).listFiles
+
+    def filesEnding(query: String) = 
+      for (file <- filesHere; if file.getName.endsWith(query))
+        yield file
+  }
+
+  Eventually, we will start wanting to strap on other functions
+
+    def filesContaining(query: String) = 
+      for (file <- filesHere; if file.getName.contains(query))
+       yield file
+
+    def filesRegex(query: String) = 
+      for (file <- filesHere; if file.getName.matches(query))
+        yield file
+
+  But, this starts to get tedious since we are essentially producing the same functionality,
+  just with different functions plugged in.
+
+  We can simplify by passing a function literal to a new function 'filesMatching'
+
+    def filesMatching(query: String, matcher: (String, String) => Boolean) = {
+      for (file <- filesHere; if matcher(file.getName, query))
+        yield file
+    }
+
+  Each function that is of a fileMatching style can now be simplified:
+
+    def filesEnding(query: String) = 
+      filesMatching(query, _.endsWith(query))
+
+    def filesContaining(query: String) = 
+      filesMatching(query, _.contains(query))
