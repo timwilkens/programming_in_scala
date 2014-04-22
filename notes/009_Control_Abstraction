@@ -48,3 +48,47 @@ Reducing Code Duplication
 
     def filesContaining(query: String) = 
       filesMatching(query, _.contains(query))
+
+Simplifying client code
+
+  In general, we can simplify our code by relying on general, abstract methods
+    - the example we use here is the 'exists' method which just checks if any element
+      in a collection meets the pass in condition
+
+  EX: method that returns true if the collection contains a negative value
+
+  def containsNeg(num: List[Int]): Boolean = {
+    var exists = false
+    for (num <- nums)
+      if (num < 0)
+      exists = true
+    exists
+  }
+
+  Using the abstract, higher-order exists
+
+  def containsNeg(nums: List[Int]) = nums.exists(_ < 0)
+
+  Another example testing if a collection contains an odd number
+
+  def containsOdd(nums: List[Int]) = nums.exists( _ % 2 == 1)
+
+Currying
+
+  "A curried function is applied to multiple argument lists, instead of just one." 
+
+  Non-curried: def plainOldSum(x: Int, y:Int) = x + y
+    - one list of two parameters
+ 
+  Curried: def curriedSum(x: Int)(y: Int) = x + y
+    - two lists, each with one parameter
+
+    This 'curried' version is actually invoking two functions. The first takes in the first parameter,
+      and returns another function that takes the second one.
+
+    The first function looks something like:
+      def first(x: Int) = (y: Int) => x + y
+
+    We can use partially aplied function notation to get a reference to the second function
+      var second = curriedSum(2)_
+      - this function adds two to whatever argument is passed in
