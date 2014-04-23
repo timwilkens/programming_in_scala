@@ -92,3 +92,86 @@ Currying
     We can use partially aplied function notation to get a reference to the second function
       var second = curriedSum(2)_
       - this function adds two to whatever argument is passed in
+
+Writing new control structures
+
+  "In languages with first-class functions, you can effectively make new control structures even
+   though the syntax of the language is fixed." 
+
+  Ex: generalized structure that allows you to repeat a function twice
+
+  def twice(op: Double => Double, x: Double): Double = op(op(x))
+
+  Invoked: twice(_ + 2, 5)  // adds two each time, starting with 5
+
+  Common control pattern: loan out a resource to a function, and then close the resource
+    - this is the loan pattern
+
+  EX: method that takes in a file, and an action on that file
+    - the method controls opening and closing the resource for you
+
+  def withPrintWriter(file: File, op: PrintWriter => Unit) {
+    val writer = new PrintWriter(file)
+    try {
+      op(writer)
+    } finally {
+      writer.close()
+    }
+  }
+
+  Any function that takes in only one argument can change parens to curlies
+
+    println("Hello, World")
+
+    println{ "Hello, World" }
+
+    - this pattern can allow some calls to feel like control abstractions
+
+  - the printWriter example can be converted to this style by using currying
+
+   def withPrintWriter(file: File)(op: PrintWriter => Unit) {
+     val writer = new PrintWriter(file)
+     try {
+       op(writer)
+     } finally {
+       writer.close()
+     }
+   }
+
+  This lets us invoke the method as follows:
+
+  val file = new File("date.txt")
+  withPrintWriter(file) {
+    writer => writer.println(new java.util.Date)
+  }
+
+By-name parameters
+
+  EX:
+
+  var assertionEnabled = true
+
+  def myAssert(predicate: () => Boolean) = 
+    if (assertionsEnabled && !predicate())
+      throw new AssertionError
+
+  myAssert(() => 5 > 3) // Awkward.
+
+  Change the function definition to use a by-name parameter
+
+  def myNameAssert(predicate: => Boolean) = 
+    if (assertionsEnabled && !predicate)
+      throw new AssertionError
+
+ Alternative: pass in just a boolean
+
+  def myBoolAssert(predicate: Boolean) = 
+    if (assertionsEnabled && !predicate)
+      throw new AssertionError
+
+  - These two formulations are different!
+    - the Boolean version evaluates predicate BEFORE it is passed to myBoolAssert
+    - the by-name version evaluates after
+
+  - in the event that our predicate is has some sort of error (divide by zero) and assertions
+    are disabled, the BoolAssert version will die, will by-name will not
